@@ -2,9 +2,10 @@
 import { el } from './dom.js';
 import { siteCount, siteOf } from './render-detail.js';
 
-// Every guide step is one claim: cited when it names at least one page, cross-checked when two or more sites back it.
+// Every guide step and every cited fact is one claim: cited when it names at least one page, cross-checked when two
+// or more sites back it. Pages, sites and disputes are counted on the merged data (trophies.json + sources-1/2/3.json).
 export function auditNumbers(data) {
-  const steps = data.trophies.flatMap((t) => t.steps.map((step) => ({ step, t })));
+  const steps = data.trophies.flatMap((t) => [...t.steps, ...(t.notes ?? [])].map((step) => ({ step, t })));
   const cited = steps.filter(({ step }) => step.cites.length).length;
   const multi = steps.filter(({ step, t }) => siteCount(step, t) >= 2).length;
   const all = data.trophies.flatMap((t) => t.sources);

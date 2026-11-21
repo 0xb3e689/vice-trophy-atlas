@@ -1,7 +1,8 @@
 // Vice Trophy Atlas: hand-in program for make.fun's gta6-trophy-guide-01 (Node 22, standard library only).
 // The guide is app/: static ES modules (main.js wires tracker.js, render-detail.js, roadmap.js, missables.js,
-// sources-tab.js, filters.js, storage.js, spoiler.js, hash-state.js), style.css and data/trophies.json with the 55
-// official trophies plus our own cited guides. It loads nothing from outside app/ and makes no network request.
+// sources-tab.js, filters.js, storage.js, spoiler.js, hash-state.js, merge-sources.js), style.css, data/trophies.json
+// with the 55 official trophies plus our own cited guides, and data/sources-1/2/3.json with the wider research (pages,
+// read dates, cited facts, disputes) merged in by trophy id. It loads nothing from outside app/ and makes no network request.
 // This program copies app/ and screenshots/ to the output dir and writes dossier.json with the vendored buildDossier.
 // Locally: `node serve.ts` to view it; `mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts` to build the hand-in.
 

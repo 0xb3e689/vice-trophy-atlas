@@ -158,3 +158,7 @@ body[data-tab="tracker"] #page { display: none; }
 .differs ul { margin: 0; padding-left: 18px; font-size: 12.5px; }
 .differs .call { margin: 3px 0 0; font-size: 12.5px; color: #ffe2a8; }
 .sources small b { color: var(--amber); font-weight: 600; }
+.cited-facts { margin-top: 8px; }
+.cited-facts h3 { margin: 0 0 4px; }
+.facts-list { margin: 0; padding-left: 18px; font-size: 13px; }
+.facts-list li { margin-bottom: 4px; line-height: 1.45; }

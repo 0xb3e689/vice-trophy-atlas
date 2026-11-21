@@ -9,11 +9,17 @@ import { renderRoadmap } from './roadmap.js';
 import { renderMissables } from './missables.js';
 import { renderSources, renderAudit } from './sources-tab.js';
 import { parseGuide } from './guide-parse.js';
+import { loadSourceFiles, mergeSources } from './merge-sources.js';
 
 const DEMO_EARNED = [2, 3, 8, 20, 21, 44, 16, 36];
 const DEMO_COUNTS = { 16: 9, 15: 64, 17: 11, 28: 5, 31: 23, 35: 41, 18: 3 };
 
-const data = await (await fetch('data/trophies.json')).json();
+// trophies.json holds the official list and our guides; sources-1/2/3.json (same folder) add pages, cited facts and disputes.
+const [data, sourceFiles] = await Promise.all([
+  fetch('data/trophies.json').then((res) => res.json()),
+  loadSourceFiles(),
+]);
+mergeSources(data, sourceFiles);
 data.trophies.forEach((t, i) => {
   t.order = i;
   t.steps = parseGuide(t.guide);

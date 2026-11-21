@@ -38,7 +38,17 @@ export function renderDetail(trophy, ctx) {
         el('ol', { class: 'steps' }, trophy.steps.map((step) =>
           el('li', {}, step.text, ' ', step.cites.map((n) => citeChip(n, trophy)),
             siteCount(step, trophy) > 1 ? el('span', { class: 'multi' }, `${siteCount(step, trophy)} sites`) : null))),
-        trophy.differs?.length ? differsBox(trophy) : null));
+        trophy.differs?.length ? differsBox(trophy) : null,
+        trophy.notes?.length ? citedFacts(trophy) : null));
+}
+
+// "Cited facts": extra one-line facts from the research files, each with chips for the pages that back it.
+function citedFacts(trophy) {
+  return el('section', { class: 'cited-facts' },
+    el('h3', {}, `Cited facts (${trophy.notes.length})`),
+    el('ul', { class: 'facts-list' }, trophy.notes.map((note) =>
+      el('li', {}, note.text, ' ', note.cites.map((n) => citeChip(n, trophy)),
+        siteCount(note, trophy) > 1 ? el('span', { class: 'multi' }, `${siteCount(note, trophy)} sites`) : null))));
 }
 
 function fact(label, value) {
@@ -67,7 +77,8 @@ export function siteOf(source) {
 
 export function citeChip(n, trophy) {
   const source = trophy.sources[n - 1];
-  return el('a', { class: 'cite', href: source?.url ?? '#', title: source?.name ?? '', target: '_blank', rel: 'noopener' },
+  const title = source ? `${source.name} · read ${source.read ?? '—'}` : '';
+  return el('a', { class: 'cite', href: source?.url ?? '#', title, target: '_blank', rel: 'noopener' },
     el('b', {}, n), siteOf(source));
 }
 
