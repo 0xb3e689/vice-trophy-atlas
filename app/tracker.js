@@ -65,6 +65,7 @@ export function renderChecklist(ctx) {
       el('span', { class: 'row-name' }, shown.name),
       el('span', { class: 'row-desc' }, shown.description)),
     t.missable ? el('span', { class: 'flag miss', title: t.missableReason }, '!') : null,
+    t.differs?.length ? el('span', { class: 'flag dis', title: 'Sources differ' }, '≠') : null,
     t.count ? el('span', { class: 'flag cnt' }, `${progress.counts[t.id] ?? 0}/${t.count}`) : null);
   }
 }

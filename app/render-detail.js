@@ -36,9 +36,9 @@ export function renderDetail(trophy, ctx) {
       : el('div', {},
         el('h3', {}, 'Guide (our words)'),
         el('ol', { class: 'steps' }, trophy.steps.map((step) =>
-          el('li', {}, step.text, ' ', step.cites.map((n) => citeChip(n, trophy))))),
-        el('h3', {}, `Sources for this guide (${trophy.sources.length})`),
-        sourceList(trophy.sources)));
+          el('li', {}, step.text, ' ', step.cites.map((n) => citeChip(n, trophy)),
+            siteCount(step, trophy) > 1 ? el('span', { class: 'multi' }, `${siteCount(step, trophy)} sites`) : null))),
+        trophy.differs?.length ? differsBox(trophy) : null));
 }
 
 function fact(label, value) {
@@ -56,12 +56,33 @@ function countStepper(trophy, progress, setCount) {
     el('span', { class: 'bar' }, el('i', { style: `width:${pct}%` })));
 }
 
+// A step's distinct sites: the claim counts as cross-checked when two or more different sites back it.
+export function siteCount(step, trophy) {
+  return new Set(step.cites.map((n) => siteOf(trophy.sources[n - 1]))).size;
+}
+
+export function siteOf(source) {
+  return source ? source.site ?? new URL(source.url).hostname : '?';
+}
+
 export function citeChip(n, trophy) {
   const source = trophy.sources[n - 1];
-  return el('a', { class: 'cite', href: source?.url ?? '#', title: source?.name ?? '', target: '_blank', rel: 'noopener' }, `[${n}]`);
+  return el('a', { class: 'cite', href: source?.url ?? '#', title: source?.name ?? '', target: '_blank', rel: 'noopener' },
+    el('b', {}, n), siteOf(source));
+}
+
+// "Sources differ": where named pages disagree (a count, whether it can be missed), show each version, who says it, and our call.
+function differsBox(trophy) {
+  return el('section', { class: 'differs' },
+    el('h4', {}, `Sources differ (${trophy.differs.length})`),
+    trophy.differs.map((d) => el('div', { class: 'differ' },
+      el('p', { class: 'differ-topic' }, d.topic),
+      el('ul', {}, d.versions.map((v) => el('li', {}, v.says, ' ', v.cites.map((n) => citeChip(n, trophy))))),
+      el('p', { class: 'call' }, el('strong', {}, 'Our call: '), d.call))));
 }
 
 export function sourceList(sources) {
   return el('ol', { class: 'sources' }, sources.map((s) =>
-    el('li', {}, el('a', { href: s.url, target: '_blank', rel: 'noopener' }, s.name), el('small', {}, new URL(s.url).hostname))));
+    el('li', {}, el('a', { href: s.url, target: '_blank', rel: 'noopener' }, s.name),
+      el('small', {}, el('b', {}, siteOf(s)), ` · read ${s.read ?? '—'} · ${new URL(s.url).hostname}`))));
 }

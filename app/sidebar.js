@@ -1,7 +1,7 @@
 // sidebar.js: the right column: the next unearned trophies in roadmap order, and the sources of the open guide.
 import { el, gradeBadge } from './dom.js';
 import { shownText } from './spoiler.js';
-import { sourceList } from './render-detail.js';
+import { sourceList, siteOf } from './render-detail.js';
 
 export function nextUp(trophies, progress, limit = 8) {
   return trophies
@@ -12,17 +12,17 @@ export function nextUp(trophies, progress, limit = 8) {
 
 export function renderSidebar(selected, ctx) {
   const { data, progress, setView } = ctx;
-  const upcoming = nextUp(data.trophies, progress).map((t) => {
+  const upcoming = nextUp(data.trophies, progress, 4).map((t) => {
     const shown = shownText(t, progress);
     return el('li', { onclick: () => setView({ trophy: String(t.id) }) },
       el('span', { class: 'stage-n' }, t.stage), gradeBadge(t.grade), el('span', {}, shown.name),
       t.missable ? el('span', { class: 'flag miss' }, '!') : null);
   });
   return [
-    el('section', { class: 'side-box' }, el('h3', {}, 'Next up in roadmap order'), el('ol', { class: 'next' }, upcoming)),
     el('section', { class: 'side-box' },
-      el('h3', {}, 'Sources for this guide'),
+      el('h3', {}, selected ? `Sources for this guide · ${selected.sources.length} pages · ${new Set(selected.sources.map(siteOf)).size} sites` : 'Sources for this guide'),
       selected ? sourceList(selected.sources) : el('p', {}, '—'),
       el('p', { class: 'note' }, 'Every step cites the page it came from; links open only when you click them.')),
+    el('section', { class: 'side-box' }, el('h3', {}, 'Next up in roadmap order'), el('ol', { class: 'next' }, upcoming)),
   ];
 }

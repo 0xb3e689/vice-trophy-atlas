@@ -7,6 +7,7 @@ export const KIND_CHIPS = [
   { id: 'activity', label: 'Activities', test: (t) => t.kind === 'activity' },
   { id: 'online', label: 'Online', test: (t) => t.kind === 'online' },
   { id: 'hidden', label: 'Hidden', test: (t) => t.hidden },
+  { id: 'disputed', label: 'Disputed', test: (t) => Boolean(t.differs?.length) },
   { id: 'todo', label: 'Not earned', test: (t, p) => !p.earned[t.id] },
 ];
 
