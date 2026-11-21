@@ -1,5 +1,6 @@
 [
-  { "file": "1-checklist.jpg", "path": "/", "viewport": { "width": 1280, "height": 800 } },
-  { "file": "2-silver.jpg", "path": "/", "grade": "silver", "viewport": { "width": 1280, "height": 800 } },
-  { "file": "3-bronze.jpg", "path": "/", "grade": "bronze", "scroll": 1400, "viewport": { "width": 1280, "height": 800 } }
+  { "file": "1-tracker.jpg", "path": "/#demo=1&trophy=28", "viewport": { "width": 1280, "height": 800 } },
+  { "file": "2-roadmap.jpg", "path": "/#demo=1&tab=roadmap&spoiler=0", "viewport": { "width": 1280, "height": 800 } },
+  { "file": "3-missables.jpg", "path": "/#demo=1&tab=missables&spoiler=0", "viewport": { "width": 1280, "height": 800 } },
+  { "file": "4-detail.jpg", "path": "/#demo=1&trophy=14&filter=collectible&spoiler=0", "viewport": { "width": 1280, "height": 800 } }
 ]
